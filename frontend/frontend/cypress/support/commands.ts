@@ -35,4 +35,15 @@
 //     }
 //   }
 // }
+export {}
+
+Cypress.Commands.add('getByData', (el: string) => cy.get(`[data-cy="${el}"]`))
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      getByData(el: string): Chainable<JQuery<HTMLElement>>
+    }
+  }
+}
 
