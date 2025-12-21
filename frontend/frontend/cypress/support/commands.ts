@@ -37,12 +37,21 @@
 // }
 export {}
 
-Cypress.Commands.add('getByData', (el: string) => cy.get(`[data-cy="${el}"]`))
+  // Get element by data-cy attribute
+Cypress.Commands.add('getByData', (selector: string) => cy.get(`[data-cy="${selector}"]`))
+
+  // Ensure navigation has occured before proceeding
+Cypress.Commands.add('navigate', (selector: string, pageUrl: string) => {
+  cy.getByData(selector).should('be.visible').click().then(() => {
+    cy.url().should('include', pageUrl)
+  })
+})
 
 declare global {
   namespace Cypress {
     interface Chainable {
       getByData(el: string): Chainable<JQuery<HTMLElement>>
+      navigate(selector: string, pageUrl: string): Chainable<void>
     }
   }
 }
