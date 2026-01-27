@@ -19,7 +19,7 @@ describe('Functional Tests', () => {
       .find('[data-cy="product-link"]')
       .click();
 
-    // Extraction du stock dans la page de détail du produit
+    // Extract stock from detail product page
     cy.getByData('detail-product-stock')
       .wait(500)
       .invoke('text')
@@ -28,7 +28,7 @@ describe('Functional Tests', () => {
 
         cy.wrap(stock).as('initialStock');
 
-        // Extraction de la valeur actuelle de la quantité
+        // Extract quantity and determine button state
         cy.getByData('detail-product-quantity')
           .invoke('val')
           .then((val) => {
@@ -50,24 +50,24 @@ describe('Functional Tests', () => {
 
                 cy.url().as('previousUrl');
 
-                // Ajout au panier
+                // Add to cart
                 cy.getByData('detail-product-quantity').clear().type('2');
                 cy.getByData('detail-product-add').click();
 
-                // Vérification API
+                // API verification
                 cy.wait('@APICheckAddToCart')
                   .its('response.statusCode')
                   .should('eq', 200);
                 cy.url().should('include', '/cart');
 
-                // Forcer la conversion TypeScript
+                // Forcing typescript to understand the type
                 cy.get('@previousUrl').then((url) => {
                   cy.visit(url as unknown as string);
                 });
 
                 cy.wait(500);
 
-                // Vérification du stock mis à jour
+                // Verify stock update
                 cy.getByData('detail-product-stock')
                   .wait(500)
                   .invoke('text')
@@ -89,45 +89,3 @@ describe('Functional Tests', () => {
       });
   });
 });
-
-/*
-product = cy.get('.list-products > [data-cy="product"]')
-                .first()
-                .find('[data-cy="product-link"]')
-
-      // Attendre le chargement complet de la page
-    cy.document().its('readyState').should('eq', 'complete')
-
-    product.click().then(() => {
-
-      quantity = cy.getByData('detail-product-quantity')
-      let quantityValue = quantity.invoke('val')
-
-      // Disponibilité du produit
-      cy.getByData('detail-product-stock').should('be.visible')
-      stock = cy.getByData('detail-product-stock')
-                .invoke('text')
-                .then((text) => Number(text.split(" ")[0]))
-
-      originalStock = Number(stock)
-
-      // Ne pas ajouter le produit au panier si stock insuffisant ou quantité invalide
-      if (Number(stock) < 1 || Number(quantityValue) > 20 || Number(quantityValue) < 1) {
-        cy.getByData('detail-product-add').should('be.disabled')
-      } else {
-        quantity.type('2').then(() => {
-          cy.getByData('detail-product-add').click()
-
-          // Vérification de l'ajout au panier via l'API
-          cy.wait('@APICheckAddToCart').then((interception) => {
-            expect(interception.response?.statusCode).to.eq(200)
-          }).then(() => {
-            cy.url().should('include', '/#/cart')
-            cy.go('back')
-            cy.url().should('include', '/#/products')
-            expect(Number(stock)).to.be.eq(originalStock - 2)
-          })
-        })
-      }
-    })
-*/
