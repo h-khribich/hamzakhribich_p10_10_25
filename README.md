@@ -62,7 +62,7 @@ Cette commande lancera un test qui fournira un rapport complet. Elle créera ég
 
 `npm run test:report`
 
-![Rapport Mochawesome](<Capture d’écran 2026-01-30 à 20.11.28.png>)
+![Rapport Mochawesome](<../Eco-Bliss-Bath-V2/rapport.png>)
 
 
 # Structure du projet
