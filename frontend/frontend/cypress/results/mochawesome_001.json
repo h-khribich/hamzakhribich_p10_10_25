@@ -1,0 +1,129 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 1,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-01-30T16:16:36.837Z",
+    "end": "2026-01-30T16:16:46.163Z",
+    "duration": 9326,
+    "testsRegistered": 2,
+    "passPercent": 50,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "9751e398-5082-4464-a3a5-a1e4187add38",
+      "title": "",
+      "fullFile": "cypress/e2e/functional.cy.ts",
+      "file": "cypress/e2e/functional.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "70a99bc9-6512-422a-9bd4-8b29077ee53a",
+          "title": "Functional Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Connexion",
+              "fullTitle": "Functional Tests Connexion",
+              "timedOut": null,
+              "duration": 5323,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "0,cypress_support_utils_cy__WEBPACK_IMPORTED_MODULE_0__.loginUser)(user)",
+              "err": {},
+              "uuid": "d3d3558b-29fe-4e30-a6ec-8eeab160a38f",
+              "parentUUID": "70a99bc9-6512-422a-9bd4-8b29077ee53a",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Panier",
+              "fullTitle": "Functional Tests Panier",
+              "timedOut": null,
+              "duration": 3812,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.intercept({\n    method: 'PUT',\n    url: `${Cypress.env('API_URL')}/orders/add`,\n}).as('APICheckAddToCart');\n(0,cypress_support_utils_cy__WEBPACK_IMPORTED_MODULE_0__.loginUser)(user);\ncy.navigate('nav-link-products', '/products');\ncy.get('.list-products > [data-cy=\"product\"]')\n    .first()\n    .find('[data-cy=\"product-link\"]')\n    .click();\n// Extract stock from detail product page\ncy.getByData('detail-product-stock')\n    .wait(500)\n    .invoke('text')\n    .then((text) => {\n    const stock = Number(text.split(' ')[0]);\n    cy.wrap(stock).as('initialStock');\n    // Extract quantity and determine button state\n    cy.getByData('detail-product-quantity')\n        .invoke('val')\n        .then((val) => {\n        const quantityValue = Number(val);\n        const shouldBeDisabled = stock < 1 || quantityValue < 1 || quantityValue > 20;\n        cy.getByData('detail-product-add').then((btn) => {\n            const isDisabled = btn.is(':disabled');\n            if (shouldBeDisabled) {\n                if (!isDisabled) {\n                    throw new Error('Le bouton \"Ajouter au panier\" devrait être désactivé mais ne l\\'est pas.');\n                }\n            }\n            else {\n                expect(isDisabled).to.be.false;\n                cy.url().as('previousUrl');\n                // Add to cart\n                cy.getByData('detail-product-quantity').clear().type('2');\n                cy.getByData('detail-product-add').click();\n                // API verification\n                cy.wait('@APICheckAddToCart')\n                    .its('response.statusCode')\n                    .should('eq', 200);\n                cy.url().should('include', '/cart');\n                // Forcing typescript to understand the type\n                cy.get('@previousUrl').then((url) => {\n                    cy.visit(url);\n                });\n                cy.wait(500);\n                // Verify stock update\n                cy.getByData('detail-product-stock')\n                    .wait(500)\n                    .invoke('text')\n                    .then((text) => {\n                    cy.get('@initialStock').then((initialStock) => {\n                        const updatedStock = Number(text.split(' ')[0]);\n                        const expectedStock = initialStock - 2;\n                        cy.log(`Stock initial: ${initialStock}`);\n                        cy.log(`Stock attendu: ${expectedStock}`);\n                        cy.log(`Stock actuel: ${updatedStock}`);\n                        expect(updatedStock).to.eq(expectedStock);\n                    });\n                });\n            }\n        });\n    });\n});",
+              "err": {
+                "message": "Error: Le bouton \"Ajouter au panier\" devrait être désactivé mais ne l'est pas.",
+                "estack": "Error: Le bouton \"Ajouter au panier\" devrait être désactivé mais ne l'est pas.\n    at Context.eval (webpack://eco-bliss-bath/./cypress/e2e/functional.cy.ts:44:24)\n    at getRet (http://localhost:8080/__cypress/runner/cypress_runner.js:122067:20)\n    at tryCatcher (http://localhost:8080/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (http://localhost:8080/__cypress/runner/cypress_runner.js:4285:29)\n    at Context.thenFn (http://localhost:8080/__cypress/runner/cypress_runner.js:122078:66)\n    at Context.then (http://localhost:8080/__cypress/runner/cypress_runner.js:122329:21)\n    at wrapped (http://localhost:8080/__cypress/runner/cypress_runner.js:145489:19)\n    at <unknown> (http://localhost:8080/__cypress/runner/cypress_runner.js:151431:15)\n    at tryCatcher (http://localhost:8080/__cypress/runner/cypress_runner.js:1777:23)",
+                "diff": null
+              },
+              "uuid": "712f0cc6-b5a6-44a6-8a3f-6e4e13c59efa",
+              "parentUUID": "70a99bc9-6512-422a-9bd4-8b29077ee53a",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "d3d3558b-29fe-4e30-a6ec-8eeab160a38f"
+          ],
+          "failures": [
+            "712f0cc6-b5a6-44a6-8a3f-6e4e13c59efa"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 9135,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

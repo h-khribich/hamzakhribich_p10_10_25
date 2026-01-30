@@ -1,4 +1,4 @@
-import { defineConfig } from "cypress";
+import { defineConfig } from 'cypress';
 
 export default defineConfig({
   e2e: {
@@ -6,8 +6,15 @@ export default defineConfig({
       // implement node event listeners here
     },
     baseUrl: 'http://localhost:8080/#',
-  env: {
-    API_URL: 'http://localhost:8081',
-  }
-  }
+    env: {
+      API_URL: 'http://localhost:8081',
+    },
+    reporter: 'mochawesome',
+    reporterOptions: {
+      reportDir: 'cypress/results',
+      overwrite: false,
+      html: false,
+      json: true,
+    },
+  },
 });

@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-01-30T16:16:52.523Z",
+    "end": "2026-01-30T16:17:02.534Z",
+    "duration": 10011,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "69451564-ff24-494d-bbb7-60d4ee239108",
+      "title": "",
+      "fullFile": "cypress/e2e/xss.cy.ts",
+      "file": "cypress/e2e/xss.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "bf5b7aa9-4b64-40f8-b431-3ef92a27f3c7",
+          "title": "XSS Vulnerability Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should not execute XSS payload",
+              "fullTitle": "XSS Vulnerability Tests should not execute XSS payload",
+              "timedOut": null,
+              "duration": 9910,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = `<script>window.location.href='https://www.google.com'</script>`;\ncy.intercept({\n    method: 'POST',\n    url: `${Cypress.env('API_URL')}/reviews`,\n}).as('APIReviewPost');\n(0,cypress_support_utils_cy__WEBPACK_IMPORTED_MODULE_0__.loginUser)(user);\ncy.visit('/reviews');\ncy.url().should('include', '/reviews');\ncy.url().then((currentUrl) => {\n    cy.wrap(currentUrl).as('reviewUrl');\n});\n// Inject payload into a search input field\ncy.getByData('review-input-rating-images').children().first().click();\ncy.getByData('review-input-title').type(payload);\ncy.getByData('review-input-comment').type(payload);\ncy.getByData('review-submit').click();\ncy.wait('@APIReviewPost')\n    .its('response.statusCode')\n    .should('eq', 200)\n    .then(() => {\n    // Check that no XSS redirection has occurred\n    cy.get('@reviewUrl').then((reviewUrl) => {\n        cy.url().should('eq', reviewUrl);\n    });\n});",
+              "err": {},
+              "uuid": "12217994-c166-4e83-901e-219cc5add335",
+              "parentUUID": "bf5b7aa9-4b64-40f8-b431-3ef92a27f3c7",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "12217994-c166-4e83-901e-219cc5add335"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 9910,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

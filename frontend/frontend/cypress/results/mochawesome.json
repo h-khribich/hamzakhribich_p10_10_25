@@ -1,0 +1,167 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 3,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-01-30T16:16:29.850Z",
+    "end": "2026-01-30T16:16:34.044Z",
+    "duration": 4194,
+    "testsRegistered": 4,
+    "passPercent": 75,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "03da60c6-830a-426e-904c-e37c29e7b94a",
+      "title": "",
+      "fullFile": "cypress/e2e/API.cy.ts",
+      "file": "cypress/e2e/API.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "2f87396f-aa5f-45c8-87ca-1013d356b908",
+          "title": "API Testing",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "USERS",
+              "fullTitle": "API Testing USERS",
+              "timedOut": null,
+              "duration": 1457,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request({\n    method: 'GET',\n    url: '/me',\n    headers: {\n        Authorization: `Bearer ${token}`\n    }\n}).then(res => expect(res.status).to.eq(200));",
+              "err": {},
+              "uuid": "780a8100-cce1-4079-8039-332487732a52",
+              "parentUUID": "2f87396f-aa5f-45c8-87ca-1013d356b908",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "ORDERS",
+              "fullTitle": "API Testing ORDERS",
+              "timedOut": null,
+              "duration": 1821,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "// Assert unauthorized access\ncy.request({\n    method: 'GET',\n    url: '/orders',\n    failOnStatusCode: false\n}).then(res => expect(res.status).to.eq(401));\n// Assert authorized access, add token\ncy.request({\n    method: 'GET',\n    url: '/orders',\n    headers: {\n        Authorization: `Bearer ${token}`\n    }\n}).then(res => expect(res.status).to.eq(200));\n// Assert available product\ncy.request({\n    method: 'PUT',\n    url: '/orders/add',\n    headers: {\n        Authorization: `Bearer ${token}`\n    },\n    body: {\n        \"product\": 9,\n        \"quantity\": 3\n    }\n}).then(res => expect(res.status).to.eq(200));\n// Assert unavailable product\ncy.request({\n    method: 'PUT',\n    url: '/orders/add',\n    failOnStatusCode: false,\n    headers: {\n        Authorization: `Bearer ${token}`\n    },\n    body: {\n        \"product\": 4,\n        \"quantity\": 3\n    }\n}).then(res => expect(res.status).to.eq(404));",
+              "err": {
+                "message": "AssertionError: expected 200 to equal 404",
+                "estack": "AssertionError: expected 200 to equal 404\n    at Context.eval (webpack://eco-bliss-bath/./cypress/e2e/API.cy.ts:73:41)\n    at getRet (http://localhost:8080/__cypress/runner/cypress_runner.js:122067:20)\n    at tryCatcher (http://localhost:8080/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (http://localhost:8080/__cypress/runner/cypress_runner.js:4285:29)\n    at Context.thenFn (http://localhost:8080/__cypress/runner/cypress_runner.js:122078:66)\n    at Context.then (http://localhost:8080/__cypress/runner/cypress_runner.js:122329:21)",
+                "diff": "- 200\n+ 404\n"
+              },
+              "uuid": "820e3941-6f20-41a6-86a7-1d86b0bfff06",
+              "parentUUID": "2f87396f-aa5f-45c8-87ca-1013d356b908",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "PRODUCTS",
+              "fullTitle": "API Testing PRODUCTS",
+              "timedOut": null,
+              "duration": 522,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let randomID = '';\ncy.request({\n    method: 'GET',\n    url: '/products/random',\n    headers: {\n        Authorization: `Bearer ${token}`\n    }\n}).then(res => {\n    expect(res.status).to.eq(200);\n    randomID = res.body[0].id;\n});\ncy.request({\n    method: 'GET',\n    url: '/products/' + randomID,\n    headers: {\n        Authorization: `Bearer ${token}`\n    }\n}).then(res => expect(res.status).to.eq(200));",
+              "err": {},
+              "uuid": "6e3c3b0b-5b52-4b94-bbf8-b6bd736ee4fd",
+              "parentUUID": "2f87396f-aa5f-45c8-87ca-1013d356b908",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "REVIEWS",
+              "fullTitle": "API Testing REVIEWS",
+              "timedOut": null,
+              "duration": 274,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request({\n    method: 'POST',\n    url: '/reviews',\n    headers: {\n        Authorization: `Bearer ${token}`\n    },\n    body: {\n        \"title\": \"APITesting\",\n        \"comment\": \"API Testing is great!\",\n        \"rating\": 5\n    }\n}).then(res => expect(res.status).to.eq(200));",
+              "err": {},
+              "uuid": "5cfef2b0-d24d-4238-91bd-83ef25d7178a",
+              "parentUUID": "2f87396f-aa5f-45c8-87ca-1013d356b908",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "780a8100-cce1-4079-8039-332487732a52",
+            "6e3c3b0b-5b52-4b94-bbf8-b6bd736ee4fd",
+            "5cfef2b0-d24d-4238-91bd-83ef25d7178a"
+          ],
+          "failures": [
+            "820e3941-6f20-41a6-86a7-1d86b0bfff06"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 4074,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}
